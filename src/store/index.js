@@ -6,10 +6,30 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tasks: [
-      { age: 40, first_name: "Dickerson", last_name: "Macdonald" },
-      { age: 21, first_name: "Larsen", last_name: "Shaw" },
-      { age: 89, first_name: "Geneva", last_name: "Wilson" },
-      { age: 38, first_name: "Jami", last_name: "Carney" },
+      {
+        id: 1,
+        specialist: "Dickerson",
+        title: "Macdonald",
+        descritpion: "Lorem ipsum",
+        status: "Active",
+        attachments: 'none'
+      },
+      {
+        id: 2,
+        specialist: "Nonenon",
+        title: "Macdonald",
+        descritpion: "Lorem ipsum",
+        status: "Active",
+        attachments: 'none'
+      },
+      {
+        id: 3,
+        specialist: "mamamija",
+        title: "Macdonald",
+        descritpion: "Lorem ipsum",
+        status: "Active",
+        attachments: 'none'
+      },
     ],
   },
   mutations: {},
