@@ -7,22 +7,7 @@
         </li>
       </ul>
     </div>
-    <div class="row container mt-3">
-      <button
-        v-if="edit === false"
-        type="button"
-        class="btn btn-success"
-        @click="editTask()"
-      >
-        Edit
-      </button>
-      <button v-else type="button" class="btn btn-primary" @click="saveTask()">
-        Save
-      </button>
-      <button type="button" class="btn btn-danger" @click="deleteTask()">
-        Delete Task
-      </button>
-    </div>
+
     <form class="mt-2">
       <div class="form-group">
         <label for="task-id">Task ID</label>
@@ -33,6 +18,7 @@
           :placeholder="getItem.id"
           v-model="getItem.id"
           readonly
+          required
         />
       </div>
       <div class="form-group">
@@ -44,6 +30,7 @@
           :placeholder="getItem.specialist"
           v-model="getItem.specialist"
           :readonly="edit === false"
+          required
         />
       </div>
       <div class="form-group">
@@ -55,6 +42,7 @@
           :placeholder="getItem.title"
           v-model="getItem.title"
           :readonly="edit === false"
+          required
         />
       </div>
       <div class="form-group">
@@ -66,6 +54,7 @@
           :placeholder="getItem.descritpion"
           v-model="getItem.descritpion"
           :readonly="edit === false"
+          required
         ></textarea>
       </div>
 
@@ -76,6 +65,7 @@
           id="task-status"
           :disabled="edit === false"
           v-model="getItem.status"
+          required
         >
           <option :selected="getItem.status == 'Active'" value="Active">
             Active
@@ -100,6 +90,7 @@
               : getItem.attachments
           "
           readonly
+          required
         />
       </div>
       <div class="mb-3" :class="{ noshow: !edit }">
@@ -111,6 +102,27 @@
           @change="handleFileUpload($event)"
           :readonly="edit === false"
         />
+      </div>
+      <div class="row container mt-3">
+        <button
+          v-if="edit === false"
+          type="button"
+          class="btn btn-success"
+          @click="editTask()"
+        >
+          Edit
+        </button>
+        <button
+          v-else
+          type="submit"
+          class="btn btn-primary"
+          @click="saveTask()"
+        >
+          Save
+        </button>
+        <button type="button" class="btn btn-danger" @click="deleteTask()">
+          Delete Task
+        </button>
       </div>
     </form>
     <div class="row container d-flex justify-content-between">
@@ -139,9 +151,6 @@
     >
       Add comment
     </button>
-    <button v-else type="button" class="btn btn-primary" @click="saveComment()">
-      Save comment
-    </button>
 
     <div v-if="commenting === true">
       <form class="mt-5">
@@ -168,6 +177,9 @@
             required
           ></textarea>
         </div>
+        <button type="submit" class="btn btn-primary" @click="saveComment()">
+          Save comment
+        </button>
       </form>
     </div>
   </div>
@@ -202,27 +214,41 @@ export default {
       this.commenting = true;
     },
     saveTask() {
-      this.edit = false;
-      const payload = {
-        id: this.getItem.id,
-        specialist: this.getItem.specialist,
-        title: this.getItem.title,
-        descritpion: this.getItem.descritpion,
-        status: this.getItem.status,
-        attachments: this.attachment,
-      };
-      this.$store.dispatch("editTask", payload);
+      if (
+        this.getItem.id &&
+        this.getItem.specialist &&
+        this.getItem.title &&
+        this.getItem.descritpion &&
+        this.getItem.status
+      ) {
+        this.edit = false;
+        const payload = {
+          id: this.getItem.id,
+          specialist: this.getItem.specialist,
+          title: this.getItem.title,
+          descritpion: this.getItem.descritpion,
+          status: this.getItem.status,
+          attachments: this.attachment,
+        };
+        this.$store.dispatch("editTask", payload);
+      } else {
+        alert("Complete missing data");
+      }
     },
     saveComment() {
-      this.commenting = false;
-      const payload = {
-        id: this.getItem.id,
-        author: this.commentAuthor,
-        text: this.commentText,
-      };
-      this.$store.dispatch("addComment", payload);
-      this.commentAuthor = "";
-      this.commentText = "";
+      if (this.commentAuthor && this.commentText) {
+        this.commenting = false;
+        const payload = {
+          id: this.getItem.id,
+          author: this.commentAuthor,
+          text: this.commentText,
+        };
+        this.$store.dispatch("addComment", payload);
+        this.commentAuthor = "";
+        this.commentText = "";
+      } else {
+        alert("Comment must have an author and text");
+      }
     },
     deleteComment(text) {
       this.commenting = false;

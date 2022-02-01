@@ -7,11 +7,7 @@
         </li>
       </ul>
     </div>
-    <div class="row container mt-3">
-      <button type="button" class="btn btn-primary" @click="saveTask()">
-        Save
-      </button>
-    </div>
+
     <form class="mt-2">
       <div class="form-group">
         <label for="task-id">Task ID</label>
@@ -22,6 +18,7 @@
           placeholder="1234"
           :value="this.id"
           readonly
+          required
         />
       </div>
       <div class="form-group">
@@ -32,6 +29,7 @@
           id="task-specialist"
           placeholder="Specialist"
           v-model="specialist"
+          required
         />
       </div>
       <div class="form-group">
@@ -42,6 +40,7 @@
           id="task-title"
           placeholder="Title"
           v-model="title"
+          required
         />
       </div>
       <div class="form-group">
@@ -52,6 +51,7 @@
           rows="3"
           placeholder="Descritpion"
           v-model="descritpion"
+          required
         ></textarea>
       </div>
 
@@ -61,6 +61,7 @@
           class="custom-select custom-select-lg mb-3 form-control"
           id="task-status"
           v-model="status"
+          required
         >
           <option value="Active">Active</option>
           <option value="Pending">Pending</option>
@@ -75,6 +76,11 @@
           id="formFile"
           @change="handleFileUpload($event)"
         />
+      </div>
+      <div class="row container mt-3">
+        <button type="submit" class="btn btn-primary" @click="saveTask()">
+          Save
+        </button>
       </div>
     </form>
     <div class="row container d-flex justify-content-between">
@@ -97,7 +103,7 @@
     </div>
     <button
       v-if="commenting == false"
-      type="button"
+      type="submit"
       class="btn btn-success"
       @click="addComment()"
     >
@@ -161,28 +167,42 @@ export default {
       this.commenting = true;
     },
     saveTask() {
-      this.edit = false;
-      const payload = {
-        id: this.id,
-        specialist: this.specialist,
-        title: this.title,
-        descritpion: this.descritpion,
-        status: this.status,
-        comments: this.comments,
-        attachment: this.attachment,
-      };
-      this.$store.dispatch("addTask", payload);
-      this.$router.push("/");
+      if (
+        this.id &&
+        this.specialist &&
+        this.title &&
+        this.descritpion &&
+        this.status
+      ) {
+        this.edit = false;
+        const payload = {
+          id: this.id,
+          specialist: this.specialist,
+          title: this.title,
+          descritpion: this.descritpion,
+          status: this.status,
+          comments: this.comments,
+          attachment: this.attachment,
+        };
+        this.$store.dispatch("addTask", payload);
+        this.$router.push("/");
+      } else {
+        alert("Complete missing data");
+      }
     },
     saveComment() {
-      this.commenting = false;
-      this.comments.push({
-        author: this.commentAuthor,
-        text: this.commentText,
-      });
+      if (this.commentAuthor && this.commentText) {
+        this.commenting = false;
+        this.comments.push({
+          author: this.commentAuthor,
+          text: this.commentText,
+        });
 
-      this.commentAuthor = "";
-      this.commentText = "";
+        this.commentAuthor = "";
+        this.commentText = "";
+      } else {
+        alert("Comment must have an author and text");
+      }
     },
     deleteComment(text) {
       this.commenting = false;
