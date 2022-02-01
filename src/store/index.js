@@ -66,6 +66,7 @@ export default new Vuex.Store({
         descritpion: payload.descritpion,
         status: payload.status,
         attachments: payload.attachment,
+        comments: payload.comments,
       });
     },
     EDIT_TASK(state, payload) {

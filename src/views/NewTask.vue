@@ -80,7 +80,7 @@
           <p class="card-text">
             {{ item.text }}
           </p>
-          <a @click="deleteComment(item.author)" class="btn btn-danger"
+          <a @click="deleteComment(item.text)" class="btn btn-danger"
             >Delete comment
           </a>
         </div>
@@ -156,20 +156,24 @@ export default {
         title: this.title,
         descritpion: this.descritpion,
         status: this.status,
+        comments: this.comments,
       };
-      this.$store.dispatch("editTask", payload);
+      this.$store.dispatch("addTask", payload);
+      this.$router.push("/");
     },
     saveComment() {
       this.commenting = false;
+      this.comments.push({
+        author: this.commentAuthor,
+        text: this.commentText,
+      });
+
+      this.commentAuthor = "";
+      this.commentText = "";
     },
-    deleteComment(author) {
-      console.log(author);
+    deleteComment(text) {
       this.commenting = false;
-      const payload = {
-        id: this.getItem.id,
-        author: author,
-      };
-      this.$store.dispatch("removeComment", payload);
+      this.comments = this.comments.filter((item) => item.text !== text);
     },
     deleteTask() {
       const payload = {
