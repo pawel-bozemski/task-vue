@@ -75,7 +75,7 @@ export default new Vuex.Store({
       task.title = payload.title;
       task.descritpion = payload.descritpion;
       task.status = payload.status;
-      task.attachments = payload.attachment;
+      task.attachments = payload.attachments;
     },
     REMOVE_TASK(state, payload) {
       const i = state.tasks.map((item) => item.id).indexOf(payload.id);
@@ -83,8 +83,6 @@ export default new Vuex.Store({
     },
     ADD_COMMENT(state, payload) {
       const task = state.tasks.find((item) => item.id === payload.id);
-      console.log(task.comments)
-      console.log(payload)
       task.comments.push({
         author: payload.author,
         text: payload.text,

@@ -67,6 +67,15 @@
           <option value="Done">Done</option>
         </select>
       </div>
+      <div class="mb-3">
+        <label for="formFile" class="form-label">Add file</label>
+        <input
+          class="form-control"
+          type="file"
+          id="formFile"
+          @change="handleFileUpload($event)"
+        />
+      </div>
     </form>
     <div class="row container d-flex justify-content-between">
       <div
@@ -139,12 +148,15 @@ export default {
       title: "",
       descritpion: "",
       status: "",
-      attachments: "",
+      attachment: "none",
       comments: [],
     };
   },
 
   methods: {
+    handleFileUpload(event) {
+      this.attachment = event.target.files[0];
+    },
     addComment() {
       this.commenting = true;
     },
@@ -157,6 +169,7 @@ export default {
         descritpion: this.descritpion,
         status: this.status,
         comments: this.comments,
+        attachment: this.attachment,
       };
       this.$store.dispatch("addTask", payload);
       this.$router.push("/");

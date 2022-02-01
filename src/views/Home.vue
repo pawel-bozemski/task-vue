@@ -24,7 +24,11 @@
           <td>{{ item.title }}</td>
           <td>{{ item.descritpion }}</td>
           <td>{{ item.status }}</td>
-          <td>{{ item.attachments }}</td>
+          <td>
+            {{
+              item.attachments.name ? item.attachments.name : item.attachments
+            }}
+          </td>
           <td>{{ item.comments.length }}</td>
         </router-link>
       </tbody>

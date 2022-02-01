@@ -88,6 +88,30 @@
           </option>
         </select>
       </div>
+      <div class="form-group">
+        <label for="task-attachment">Attachments</label>
+        <input
+          type="text"
+          class="form-control"
+          id="task-attachment"
+          :placeholder="
+            getItem.attachments.name
+              ? getItem.attachments.name
+              : getItem.attachments
+          "
+          readonly
+        />
+      </div>
+      <div class="mb-3" :class="{ noshow: !edit }">
+        <label for="formFile" class="form-label">Add file</label>
+        <input
+          class="form-control"
+          type="file"
+          id="formFile"
+          @change="handleFileUpload($event)"
+          :readonly="edit === false"
+        />
+      </div>
     </form>
     <div class="row container d-flex justify-content-between">
       <div
@@ -158,7 +182,7 @@ export default {
       commentText: "",
       edit: false,
       commenting: false,
-      attachments: "",
+      attachment: "",
     };
   },
   computed: {
@@ -168,6 +192,9 @@ export default {
     },
   },
   methods: {
+    handleFileUpload(event) {
+      this.attachment = event.target.files[0];
+    },
     editTask() {
       this.edit = true;
     },
@@ -182,6 +209,7 @@ export default {
         title: this.getItem.title,
         descritpion: this.getItem.descritpion,
         status: this.getItem.status,
+        attachments: this.attachment,
       };
       this.$store.dispatch("editTask", payload);
     },
@@ -215,4 +243,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.noshow {
+  display: none;
+}
+</style>
