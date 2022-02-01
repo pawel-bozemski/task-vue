@@ -69,7 +69,6 @@ export default new Vuex.Store({
       });
     },
     EDIT_TASK(state, payload) {
-      console.log(payload);
       const task = state.tasks.find((item) => item.id === payload.id);
       task.specialist = payload.specialist;
       task.title = payload.title;
@@ -90,7 +89,6 @@ export default new Vuex.Store({
     },
     REMOVE_COMMENT(state, payload) {
       const i = state.tasks.filter((item) => item.id == payload.id);
-      console.log(i[0].comments)
       i[0].comments.splice(payload.author, 1);
     },
   },

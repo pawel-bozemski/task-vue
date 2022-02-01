@@ -29,6 +29,16 @@
         </router-link>
       </tbody>
     </table>
+    <div class="row container mt-3">
+      <router-link
+        tag="button"
+        type="button"
+        class="btn btn-danger"
+        :to="{ name: 'new-task' }"
+      >
+        Add New Task
+      </router-link>
+    </div>
   </div>
 </template>
 

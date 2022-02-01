@@ -1,7 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
-import Single from "../views/Single.vue";
+import Task from "../views/Task.vue";
+import NewTask from "../views/NewTask.vue";
 
 Vue.use(VueRouter);
 
@@ -14,7 +15,12 @@ const routes = [
   {
     name: "task",
     path: "/task/:id",
-    component: Single,
+    component: Task,
+  },
+  {
+    name: "new-task",
+    path: "/new-task",
+    component: NewTask,
   },
 ];
 
