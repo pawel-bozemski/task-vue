@@ -101,7 +101,7 @@
           <p class="card-text">
             {{ item.text }}
           </p>
-          <a @click="deleteComment(item.author)" class="btn btn-danger"
+          <a @click="deleteComment(item.text)" class="btn btn-danger"
             >Delete comment</a
           >
         </div>
@@ -110,7 +110,7 @@
     <button
       v-if="commenting == false"
       type="button"
-      class="btn btn-success"
+      class="btn btn-success mt-5"
       @click="addComment()"
     >
       Add comment
@@ -129,6 +129,7 @@
             id="comment-author"
             placeholder="Author"
             v-model="commentAuthor"
+            required
           />
         </div>
 
@@ -140,6 +141,7 @@
             rows="3"
             placeholder="Comment"
             v-model="commentText"
+            required
           ></textarea>
         </div>
       </form>
@@ -156,13 +158,7 @@ export default {
       commentText: "",
       edit: false,
       commenting: false,
-      id: "",
-      specialist: "",
-      title: "",
-      descritpion: "",
-      status: "",
       attachments: "",
-      comments: [],
     };
   },
   computed: {
@@ -191,13 +187,20 @@ export default {
     },
     saveComment() {
       this.commenting = false;
+      const payload = {
+        id: this.getItem.id,
+        author: this.commentAuthor,
+        text: this.commentText,
+      };
+      this.$store.dispatch("addComment", payload);
+      this.commentAuthor = "";
+      this.commentText = "";
     },
-    deleteComment(author) {
-      console.log(author);
+    deleteComment(text) {
       this.commenting = false;
       const payload = {
         id: this.getItem.id,
-        author: author,
+        text: text,
       };
       this.$store.dispatch("removeComment", payload);
     },

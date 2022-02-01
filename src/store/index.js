@@ -16,19 +16,19 @@ export default new Vuex.Store({
         comments: [
           {
             author: "Spiderman",
-            text: "Lorem Ipsum",
+            text: "Lorem Ipsuma",
           },
           {
             author: "Spiderman",
-            text: "Lorem Ipsum",
+            text: "Lorem",
           },
           {
             author: "Spiderman",
-            text: "Lorem Ipsum",
+            text: "Lorem ssss",
           },
           {
             author: "Spiderman",
-            text: "Lorem Ipsum",
+            text: "Lorem ddadaa",
           },
         ],
       },
@@ -82,6 +82,8 @@ export default new Vuex.Store({
     },
     ADD_COMMENT(state, payload) {
       const task = state.tasks.find((item) => item.id === payload.id);
+      console.log(task.comments)
+      console.log(payload)
       task.comments.push({
         author: payload.author,
         text: payload.text,
@@ -89,7 +91,10 @@ export default new Vuex.Store({
     },
     REMOVE_COMMENT(state, payload) {
       const i = state.tasks.filter((item) => item.id == payload.id);
-      i[0].comments.splice(payload.author, 1);
+      const comments = i[0].comments.filter(
+        (item) => item.text != payload.text
+      );
+      i[0].comments = comments;
     },
   },
   actions: {

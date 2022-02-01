@@ -20,7 +20,8 @@
           class="form-control"
           id="task-id"
           placeholder="1234"
-          v-model="this.id"
+          :value="this.id"
+          readonly
         />
       </div>
       <div class="form-group">
@@ -30,7 +31,7 @@
           class="form-control"
           id="task-specialist"
           placeholder="Specialist"
-          v-model="this.specialist"
+          v-model="specialist"
         />
       </div>
       <div class="form-group">
@@ -40,7 +41,7 @@
           class="form-control"
           id="task-title"
           placeholder="Title"
-          v-model="this.title"
+          v-model="title"
         />
       </div>
       <div class="form-group">
@@ -50,7 +51,7 @@
           id="task-descritpion"
           rows="3"
           placeholder="Descritpion"
-          v-model="this.descritpion"
+          v-model="descritpion"
         ></textarea>
       </div>
 
@@ -59,7 +60,7 @@
         <select
           class="custom-select custom-select-lg mb-3 form-control"
           id="task-status"
-          v-model="this.status"
+          v-model="status"
         >
           <option value="Active">Active</option>
           <option value="Pending">Pending</option>
@@ -133,7 +134,7 @@ export default {
       commentText: "",
       edit: false,
       commenting: false,
-      id: "",
+      id: Math.floor(1000 + Math.random() * 9000),
       specialist: "",
       title: "",
       descritpion: "",
@@ -150,11 +151,11 @@ export default {
     saveTask() {
       this.edit = false;
       const payload = {
-        id: this.getItem.id,
-        specialist: this.getItem.specialist,
-        title: this.getItem.title,
-        descritpion: this.getItem.descritpion,
-        status: this.getItem.status,
+        id: this.id,
+        specialist: this.specialist,
+        title: this.title,
+        descritpion: this.descritpion,
+        status: this.status,
       };
       this.$store.dispatch("editTask", payload);
     },
