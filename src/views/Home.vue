@@ -9,6 +9,7 @@
           <th scope="col">Descritpion</th>
           <th scope="col">Status</th>
           <th scope="col">Attachments</th>
+          <th scope="col">Comments</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +25,7 @@
           <td>{{ item.descritpion }}</td>
           <td>{{ item.status }}</td>
           <td>{{ item.attachments }}</td>
+          <td>{{ item.comments.length }}</td>
         </router-link>
       </tbody>
     </table>
