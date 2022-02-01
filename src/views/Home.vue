@@ -37,7 +37,7 @@
       <router-link
         tag="button"
         type="button"
-        class="btn btn-danger"
+        class="btn btn-primary"
         :to="{ name: 'new-task' }"
       >
         Add New Task
