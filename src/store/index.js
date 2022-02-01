@@ -69,7 +69,8 @@ export default new Vuex.Store({
       });
     },
     EDIT_TASK(state, payload) {
-      const task = state.objects.find((item) => item.id === payload.id);
+      console.log(payload);
+      const task = state.tasks.find((item) => item.id === payload.id);
       task.specialist = payload.specialist;
       task.title = payload.title;
       task.descritpion = payload.descritpion;
@@ -77,18 +78,20 @@ export default new Vuex.Store({
       task.attachments = payload.attachment;
     },
     REMOVE_TASK(state, payload) {
-      state.tasks.filter((item) => item.id !== payload.id);
+      const i = state.tasks.map((item) => item.id).indexOf(payload.id);
+      state.tasks.splice(i, 1);
     },
     ADD_COMMENT(state, payload) {
-      const task = state.objects.find((item) => item.id === payload.id);
+      const task = state.tasks.find((item) => item.id === payload.id);
       task.comments.push({
         author: payload.author,
         text: payload.text,
       });
     },
     REMOVE_COMMENT(state, payload) {
-      const task = state.objects.find((item) => item.id === payload.id);
-      task.comments.filter((item) => item.author !== payload.author);
+      const i = state.tasks.filter((item) => item.id == payload.id);
+      console.log(i[0].comments)
+      i[0].comments.splice(payload.author, 1);
     },
   },
   actions: {

@@ -3,7 +3,7 @@
     <div class="container mt-1 d-flex justify-content-center">
       <ul class="nav">
         <li class="nav-item">
-          <a class="nav-link active" href="/">Home</a>
+          <router-link tag="a" class="nav-link" to="/"> Home </router-link>
         </li>
       </ul>
     </div>
@@ -31,8 +31,7 @@
           class="form-control"
           id="task-id"
           :placeholder="getItem.id"
-          v-model="id"
-          :value="getItem.id"
+          v-model="getItem.id"
           readonly
         />
       </div>
@@ -43,11 +42,21 @@
           class="form-control"
           id="task-specialist"
           :placeholder="getItem.specialist"
-          v-model="specialist"
+          v-model="getItem.specialist"
           :readonly="edit === false"
         />
       </div>
-
+      <div class="form-group">
+        <label for="task-title">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="task-title"
+          :placeholder="getItem.title"
+          v-model="getItem.title"
+          :readonly="edit === false"
+        />
+      </div>
       <div class="form-group">
         <label for="task-descritpion">Descritpion</label>
         <textarea
@@ -55,7 +64,7 @@
           id="task-descritpion"
           rows="3"
           :placeholder="getItem.descritpion"
-          v-model="descritpion"
+          v-model="getItem.descritpion"
           :readonly="edit === false"
         ></textarea>
       </div>
@@ -66,15 +75,15 @@
           class="custom-select custom-select-lg mb-3 form-control"
           id="task-status"
           :disabled="edit === false"
-          v-model="status"
+          v-model="getItem.status"
         >
           <option :selected="getItem.status == 'Active'" value="Active">
             Active
           </option>
-          <option :selected="getItem.status == 'Pending'" value="pending">
+          <option :selected="getItem.status == 'Pending'" value="Pending">
             Pending
           </option>
-          <option :selected="getItem.status == 'Done'" value="done">
+          <option :selected="getItem.status == 'Done'" value="Done">
             Done
           </option>
         </select>
@@ -92,7 +101,9 @@
           <p class="card-text">
             {{ item.text }}
           </p>
-          <a @click="deleteComent()" class="btn btn-danger">Delete coment</a>
+          <a @click="deleteComment(item.author)" class="btn btn-danger"
+            >Delete comment</a
+          >
         </div>
       </div>
     </div>
@@ -137,6 +148,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -154,8 +166,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getTaskById"]),
     getItem() {
-      return this.$store.getters.getTaskById(this.$route.params.id);
+      return this.getTaskById(this.$route.params.id);
     },
   },
   methods: {
@@ -167,15 +180,33 @@ export default {
     },
     saveTask() {
       this.edit = false;
+      const payload = {
+        id: this.getItem.id,
+        specialist: this.getItem.specialist,
+        title: this.getItem.title,
+        descritpion: this.getItem.descritpion,
+        status: this.getItem.status,
+      };
+      this.$store.dispatch("editTask", payload);
     },
     saveComment() {
       this.commenting = false;
     },
-    deleteComment() {
-      this.edit = false;
+    deleteComment(author) {
+      console.log(author);
+      this.commenting = false;
+      const payload = {
+        id: this.getItem.id,
+        author: author,
+      };
+      this.$store.dispatch("removeComment", payload);
     },
     deleteTask() {
-      this.commenting = false;
+      const payload = {
+        id: this.getItem.id,
+      };
+      this.$store.dispatch("removeTask", payload);
+      this.$router.push("/");
     },
   },
 };
