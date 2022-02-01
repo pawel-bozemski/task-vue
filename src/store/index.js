@@ -12,7 +12,7 @@ export default new Vuex.Store({
         title: "Macdonald",
         descritpion: "Lorem ipsum",
         status: "Active",
-        attachments: 'none'
+        attachments: "none",
       },
       {
         id: 2,
@@ -20,7 +20,7 @@ export default new Vuex.Store({
         title: "Macdonald",
         descritpion: "Lorem ipsum",
         status: "Active",
-        attachments: 'none'
+        attachments: "none",
       },
       {
         id: 3,
@@ -28,11 +28,15 @@ export default new Vuex.Store({
         title: "Macdonald",
         descritpion: "Lorem ipsum",
         status: "Active",
-        attachments: 'none'
+        attachments: "none",
       },
     ],
   },
   mutations: {},
   actions: {},
-  modules: {},
+  getters: {
+    getTaskById: (state) => (id) => {
+      return state.tasks.find((task) => task.id == id);
+    },
+  },
 });
